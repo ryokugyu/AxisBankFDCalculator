@@ -1,25 +1,37 @@
 package PageClasses;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import ConversionObjects.WebElementsObjects;
 
 public class HomePage {
+	public WebDriver driver;
+	
+	public HomePage(WebDriver driver) {
+		this.driver = driver;
+		PageFactory.initElements(driver, this);
+	}
 
-	public void selectSeniorCitizenOption(WebDriver driver) {
+	public void selectSeniorCitizenOption() throws InterruptedException {
+		WebDriverWait wait = new WebDriverWait(driver,5);
+		wait.until(ExpectedConditions.visibilityOf(WebElementsObjects.SeniorCitizenRadioButton));
 		WebElementsObjects.SeniorCitizenRadioButton.click();
 	}
 
-	public void selectPayoutOption(WebDriver driver) {
-		WebElementsObjects.payOut.click();
+	public void selectPayoutOption() {
+		Select payoutTerm = new Select(WebElementsObjects.payOut);
+		payoutTerm.selectByVisibleText("Monthly Payout");
 	}
 
-	public void enterDepositAmount(WebDriver driver) {
+	public void enterDepositAmount() {
 		WebElementsObjects.loanAmount.sendKeys("50000");
 	}
 
-	public void enterTimePeriod(WebDriver driver) {
+	public void enterTimePeriod() {
 
 		Select tenureYear = new Select(WebElementsObjects.tenureYear);
 		tenureYear.selectByVisibleText("5"); // We have to select data from excel
@@ -31,8 +43,9 @@ public class HomePage {
 		WebElementsObjects.tenureDays.sendKeys("15");
 	}
 
-	public void showMaturityRate(WebDriver driver) {
-		System.out.println("The maturity amount is: " + WebElementsObjects.result.getText());
+	public String showMaturityRate() {
+		
+		return WebElementsObjects.result.getText();
 		
 		
 		/* Method to fetch all the details
